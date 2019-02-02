@@ -12,6 +12,7 @@ import { FormsModule } from '@angular/forms';
 
 import { PAGES_ROUTES } from './page.routes';
 import { ChartsModule } from 'ng2-charts';
+import { AccoutSettingsComponent } from './accout-settings/accout-settings.component';
 
 @NgModule({
     declarations: [
@@ -20,7 +21,8 @@ import { ChartsModule } from 'ng2-charts';
         Graficas1Component,
         PagesComponent,
         IncrementadorComponent,
-        GraficoDonaComponent
+        GraficoDonaComponent,
+        AccoutSettingsComponent
 
     ],
     exports: [
