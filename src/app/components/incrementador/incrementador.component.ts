@@ -21,7 +21,6 @@ export class IncrementadorComponent implements OnInit {
 
   onChanges(newValue: number){
 
-    console.log(this.txtPorcentaje);
     if(newValue >= 100){
       this.porcentaje = 100;
     }else if(newValue <= 0){
