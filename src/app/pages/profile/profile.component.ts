@@ -21,7 +21,6 @@ export class ProfileComponent implements OnInit {
   }
 
   ngOnInit() {
-
   }
   guardarUsuario(usuario: Usuario){
     if(!this.usuario.google){

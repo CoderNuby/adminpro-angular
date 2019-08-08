@@ -1,0 +1,62 @@
+<div class="fondo-negro animated fadeIn" [ngClass]="activar">
+  <div class="modal" style="display: block" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Editar informacion de usuario</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="activar='activar'">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="row">
+          <div class="col-sm-5">
+            <div class="modal-body text-center">
+              <img  *ngIf="!imagenTemporal" [src]="'' | imagen" class="img-witdh" alt="Imagen de usuario">
+              <img  *ngIf="imagenTemporal" [src]="imagenTemporal" class="img-witdh" alt="Imagen de usuario">
+              
+              <div class="container-fluid estilo-personalizado">
+                <button class="estilo-fotos btn btn-outline-dark">
+                  Elegir Imagen
+                  <input (change)="seleccionImagen($event)" type="file" class="input-subir-foto">
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-7">
+            <div class="container">
+                <h3>Inforamacion</h3>
+                <hr>
+                <form action="">
+                  <div>
+                    <h5>Nombre:</h5>
+                    <input type="text" class="form-control" aria-describedby="basic-addon1">
+                  </div>
+                  <hr>
+                  <div>
+                    <h5>Email:</h5>
+                    <input type="text" class="form-control" aria-describedby="basic-addon1">
+                  </div>
+                  <hr>
+                  <div>
+                    <h5>Role:</h5>
+                    <button type="button" class="btn btn-outline-warning">ADMIN_ROLE</button>
+                  </div>
+                  <hr>
+                </form>
+                <!--
+                <div class="d-flex justify-content-sm-end borde">
+                    <button (click)="cambiarUsuario(usuario)" type="button" class="btn btn-outline-primary mr-1">
+                      <i class="fa fa-save"></i>
+                    </button>
+                    <button (click)="BorrarUsuario(usuario)" type="button" class="btn btn-outline-danger mr-1">
+                      <i class="fa fa-trash-o"></i>
+                    </button>
+                  </div>
+                -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>      
+</div>

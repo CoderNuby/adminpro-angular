@@ -1,7 +1,8 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { LoginGuardGuard, SettingsService,SharedService, SidebarService, UsuarioService, SubirArchivoService } from './service.index';
+import { LoginGuardGuard,SettingsService,SharedService, SidebarService, UsuarioService, SubirArchivoService} from './service.index';
 import { HttpClientModule } from '@angular/common/http';
+import { ModalUploadService } from '../components/modal-upload/modal-upload.service';
 
 
 //Servicios
@@ -15,7 +16,8 @@ import { HttpClientModule } from '@angular/common/http';
     SharedService,
     SidebarService,
     LoginGuardGuard,
-    SubirArchivoService
+    SubirArchivoService,
+    ModalUploadService
   ],
   imports: [
     CommonModule,

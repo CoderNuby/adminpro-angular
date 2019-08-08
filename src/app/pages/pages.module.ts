@@ -19,6 +19,9 @@ import { PipesModule } from '../pipes/pipes.module';
 import { ProfileComponent } from './profile/profile.component';
 
 import { CommonModule } from '@angular/common';
+import { UsuariosComponent } from './usuarios/usuarios.component';
+import { ModalUploadComponent } from '../components/modal-upload/modal-upload.component';
+import { ModalUploadService } from '../components/modal-upload/modal-upload.service';
 
 @NgModule({
     declarations: [
@@ -31,8 +34,10 @@ import { CommonModule } from '@angular/common';
         AccoutSettingsComponent,
         PromesasComponent,
         RxjsComponent,
-        ProfileComponent
-
+        ProfileComponent,
+        UsuariosComponent,
+        ModalUploadComponent,
+        ModalUploadService
     ],
     exports: [
         DashboardComponent,
