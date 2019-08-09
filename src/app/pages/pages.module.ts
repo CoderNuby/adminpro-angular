@@ -36,8 +36,7 @@ import { ModalUploadService } from '../components/modal-upload/modal-upload.serv
         RxjsComponent,
         ProfileComponent,
         UsuariosComponent,
-        ModalUploadComponent,
-        ModalUploadService
+        ModalUploadComponent
     ],
     exports: [
         DashboardComponent,
