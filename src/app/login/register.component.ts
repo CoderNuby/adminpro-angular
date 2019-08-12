@@ -18,6 +18,8 @@ export class RegisterComponent implements OnInit {
 
   forma: FormGroup;
 
+  numeroTest: number = 0;//IMPORTANTE!!!quitar
+
   constructor(
     public _usuarioService: UsuarioService,
     public router: Router
@@ -46,15 +48,25 @@ export class RegisterComponent implements OnInit {
       condiciones: new FormControl(false)
     }, {validators: this.CompararCampos('password', 'password2')});
 
+    this._usuarioService.cargarUsuarios(0).subscribe((res: any) => {
+      this.numeroTest = res.totalUsuarios + 1;
+    });
+    console.log(this.numeroTest);
+    /*Quiter lo de arriba cuando se suba a produccion */
+  }
+  registrarUsuario(){
     this.forma.setValue({
-      nombre: 'Test',
-      email: 'test@test.com',
+      nombre: `Test ${this.numeroTest}`,
+      email: `test${this.numeroTest}@test.com`,
       password: '123',
       password2: '123',
       condiciones: true
     });
-  }
-  registrarUsuario(){
+    this.numeroTest = this.numeroTest + 1;
+    console.log(this.numeroTest);
+    /*
+    IMPORTANTE!!!quitar la parte de arriba cuando se suba a produccion es solo para crear usuarios de una manera mas facil
+    */
     if(!this.forma.valid){
       return;
     }
@@ -67,7 +79,12 @@ export class RegisterComponent implements OnInit {
       this.forma.value.email,
       this.forma.value.password
     );
-    this._usuarioService.crearUsuario(usuario).subscribe(response=>this.router.navigate(['/login']));
+    
+    this._usuarioService.crearUsuario(usuario).subscribe(response=>{
+      this.router.navigate(['/register']);
+      //IMPORTANTE!!!Cambiar la navegacion a login
+      return;
+    });
   }
 
 }

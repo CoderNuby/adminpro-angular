@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { NgForm } from '@angular/forms';
+import { NgForm, FormGroup, FormControl, Validators } from '@angular/forms';
 import { UsuarioService } from '../services/service.index';
 import { Usuario } from '../models/usuario.model';
 
@@ -15,6 +15,7 @@ declare const gapi: any;
 export class LoginComponent implements OnInit {
 
   email: string;
+  password: string;
   recordar_cuenta: boolean = false;
 
   auth2:any;
@@ -24,10 +25,12 @@ export class LoginComponent implements OnInit {
     public _usuarioService: UsuarioService
   ) { }
 
-  ngOnInit() { 
+  ngOnInit() {
     init_plugins();
     this.googleInit();
-    this.email = localStorage.getItem('email') || '';
+    this.email = "test1@test.com";
+    this.password = "123";
+    //this.email = localStorage.getItem('email') || '';
     if(this.email.length > 1){
       this.recordar_cuenta = true;
     }

@@ -8,7 +8,7 @@ import { IncrementadorComponent } from '../components/incrementador/incrementado
 import { GraficoDonaComponent } from '../components/grafico-dona/grafico-dona.component';
 
 import { SharedModule } from '../shared/shared.module';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { PAGES_ROUTES } from './page.routes';
 import { ChartsModule } from 'ng2-charts';
@@ -19,6 +19,8 @@ import { PipesModule } from '../pipes/pipes.module';
 import { ProfileComponent } from './profile/profile.component';
 
 import { CommonModule } from '@angular/common';
+import { UsuariosComponent } from './usuarios/usuarios.component';
+import { ModalUploadComponent } from '../components/modal-upload/modal-upload.component';
 
 @NgModule({
     declarations: [
@@ -31,8 +33,9 @@ import { CommonModule } from '@angular/common';
         AccoutSettingsComponent,
         PromesasComponent,
         RxjsComponent,
-        ProfileComponent
-
+        ProfileComponent,
+        UsuariosComponent,
+        ModalUploadComponent
     ],
     exports: [
         DashboardComponent,
@@ -46,7 +49,8 @@ import { CommonModule } from '@angular/common';
         FormsModule,
         ChartsModule,
         PipesModule,
-        CommonModule
+        CommonModule,
+        ReactiveFormsModule,
     ]
 })
 

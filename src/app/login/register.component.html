@@ -4,7 +4,8 @@
 <section class="login-register login-sidebar" id="wrapper" style="background-image:url(../assets/images/background/login-register.jpg);">
   <div class="login-box card">
       <div class="card-body">
-          <form ngNativeValidate [formGroup]="forma" (ngSubmit)="registrarUsuario()" class="form-horizontal form-material" id="loginform" action="index.html">
+          <!--ngNativeValidate            IMPORTANTE!!!agregar al form cuando se suba aproduccion-->
+          <form [formGroup]="forma" (ngSubmit)="registrarUsuario()" class="form-horizontal form-material" id="loginform" action="index.html">
               <a class="text-center db" href="javascript:void(0)"><img alt="Home" src="../assets/images/logo-icon.png"><br><img alt="Home" src="../assets/images/logo-text.png"></a>
               <h3 class="box-title m-t-40 m-b-0">Registrate Ahora!!</h3><small>Crea tu cuenta y disfruta</small>
               <div class="form-group m-t-20">
@@ -27,7 +28,7 @@
                       <input formControlName="password2" name="password2" class="form-control" required type="password" placeholder="Confirmar contraseña">
                   </div>
               </div>
-              <div class="form-group" *ngIf="forma.errors?.CompararCampos && !forma.pristine">
+              <div class="form-group alert alert-danger" role="alert" *ngIf="forma.errors?.CompararCampos && !forma.pristine">
                   <p class="text-danger">
                       Las contraseñas deben de der iguales
                   </p>
