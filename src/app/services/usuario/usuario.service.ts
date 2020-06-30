@@ -72,7 +72,7 @@ export class UsuarioService {
       this.guardarInformacionLocalStorage(response.id, response.token, response.usuario);
       return true;
     }));
-  };
+  }
   crearUsuario(usuario:Usuario){
     let url = URL_SERVICIOS+'/usuario';
     return this.http.post( url, usuario)
@@ -84,10 +84,11 @@ export class UsuarioService {
   actualizarUsuario(usuario:Usuario){
     let url = URL_SERVICIOS+'/usuario/'+usuario._id+'?token='+this.token;
     return this.http.put(url, usuario).pipe(map( (resp: any) => {
-      if(usuario._id == this.usuario._id){
-        //guardar cambios en el localstorage
+      //guardar cambios en el localstorage
         
-        swal("Nombre Actualizado", "Name: "+usuario.nombre+"\n"+"Email: "+usuario.email, "success");
+      swal("Usuario Actualizado", "Name: "+usuario.nombre+"\n"+"Email: "+usuario.email+"\n"+"Role: "+usuario.role, "success");
+      if(usuario._id == this.usuario._id){
+        //Actualiza el localStorage solo si el usuario que esta logiado es el mismo al que se le realizaron los cambios
         let user: Usuario = resp.usuario;
         this.guardarInformacionLocalStorage(user._id, this.token, user);
       }
@@ -104,17 +105,19 @@ export class UsuarioService {
     });
   }
 
-  cargarUsuarios(desde: number = 0){
-    let url = `${URL_SERVICIOS}/usuario?desde=${desde}&token=${this.token}`;
+  cargarUsuarios(desde: number = 0, registroPerPage: number = 12){
+    let url = `${URL_SERVICIOS}/usuario?desde=${desde}&limit=${registroPerPage}&token=${this.token}`;
     return this.http.get(url);
   }
+
   buscarUsuarios(termino: string){
     let url = URL_SERVICIOS+'/busqueda/coleccion/usuario/'+termino;
     return this.http.get(url).pipe(map((res:any) => res.usuario));
   }
+  
   //Borrar usuario
   borrarUsuario(id: string){
     let url = `${URL_SERVICIOS}/usuario/${id}?token=${this.token}`;
-    return this.http.delete(url);
+    return this.http.delete(url).pipe(map((res: any)=> res.usuario ));
   }
 }

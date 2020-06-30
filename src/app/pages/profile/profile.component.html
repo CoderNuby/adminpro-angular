@@ -41,11 +41,11 @@
         <img  *ngIf="imagenTemporal" [src]="imagenTemporal" class="w150" alt="Imagen de usuario">
         
         <div class="container-fluid estilo-personalizado">
-                <button class="estilo-fotos btn btn-outline-dark">
-                  Elegir Imagen
-                  <input (change)="seleccionImagen($event)" type="file" class="custom-file-input input-subir-foto">
-                </button>
-              </div>
+          <button class="estilo-fotos btn btn-outline-dark">
+            Elegir Imagen
+            <input (change)="seleccionImagen($event)" type="file" class="custom-file-input input-subir-foto">
+          </button>
+        </div>
         <br><br>
         <div class="offset-sm-3 col-sm-9">
             <button (click)="cambiarImagen()" [disabled]="!imagenSubir" class="btn  btn-block btn-success waves-effect waves-light" type="submit"><i class="fa fa-save"></i>Change</button>

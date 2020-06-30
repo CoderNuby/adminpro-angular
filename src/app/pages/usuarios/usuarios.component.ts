@@ -1,10 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output } from '@angular/core';
 import { Usuario } from 'src/app/models/usuario.model';
-import { UsuarioService } from 'src/app/services/service.index';
+import { UsuarioService, ModalUploadImagenService } from '../../services/service.index';
 
+//sweetAlert-Import
 import swal from 'sweetalert';
-import { ModalUploadComponent } from 'src/app/components/modal-upload/modal-upload.component';
-import { ModalUploadService } from 'src/app/components/modal-upload/modal-upload.service';
 
 @Component({
   selector: 'app-usuarios',
@@ -13,117 +12,121 @@ import { ModalUploadService } from 'src/app/components/modal-upload/modal-upload
 })
 export class UsuariosComponent implements OnInit {
 
-  Role: any;
-  usuarioModal:Usuario;
-  ActivarModal:boolean;
-
   usuarios: Usuario[] = [];
+
   desde: number = 0;
 
-  checkFocus: boolean = false;
+  totalRegistros: number;//Automatizar el total de usuarios
+
+  registrosPerPages: number = 3;
 
 
-  totalRegistros: number = 0;
-  
   cargando: boolean = true;
 
-  activarBoton1: boolean = false;
-  activarBoton2: boolean = false;
+  
+  imagenTemporal:any;
+  imagenSubir: File;
 
-  counter:number = 10;
+  editingNombre: boolean = false;
+  editingCorreo: boolean = false;
 
-  constructor(
-    public _usuarioService: UsuarioService,
-    public _modalUploadService: ModalUploadService
+
+  constructor( 
+    private _usuarioService: UsuarioService,
+    private _modalServices: ModalUploadImagenService
     ) {
+    console.log("Valor: ", this.desde);
+    this.cargando = true;
+    this._usuarioService.cargarUsuarios(this.desde, this.registrosPerPages).subscribe((resp: any) => {
+      this.usuarios = resp.usuarios;
+      this.totalRegistros = resp.totalUsuarios;
+      console.log("Usuarios totales: "+this.totalRegistros);
+      this.cargando = false;
+    });
   }
 
   ngOnInit() {
-    this.Role = this._usuarioService.usuario.role;
     this.cargarUsuarios();
-    this.ActivarModal = false;
-    this._modalUploadService.notificacion.subscribe(res => {
+    
+    this._modalServices.notificar.subscribe(resp => {
       this.cargarUsuarios();
     });
   }
 
   cargarUsuarios(){
     this.cargando = true;
-    this._usuarioService.cargarUsuarios(this.desde).subscribe((resp: any) => {
-      this.totalRegistros = resp.totalUsuarios;
+    this._usuarioService.cargarUsuarios(this.desde, this.registrosPerPages).subscribe((resp: any) => {
       this.usuarios = resp.usuarios;
+      console.log("Usuarios: ",this.usuarios);
+      this.totalRegistros = resp.totalUsuarios;
       this.cargando = false;
-      console.log(resp);
-      console.log(this.desde);
     });
   }
-  mostrarOtrosUsuarios(cambio: number){
 
-    let valor = this.desde + cambio;
-    console.log(valor);
-    console.log(this.desde);
-    if(valor >= this.totalRegistros){
-      this.activarBoton1 = true;
-      return;
-    }else this.activarBoton1 = false;
-    if(valor < 0){
-      this.activarBoton2 = true;
-      return;
-    }else this.activarBoton2 = false;
-    this.desde = this.desde + cambio;
+  cambiarPagina($event){
+    this.desde = $event;
+    if(this.desde < 0){
+      this.desde = 0;
+    }
     this.cargarUsuarios();
   }
-  buscarUsuario(termino: string){
-    console.log(termino);
-    this._usuarioService.buscarUsuarios(termino).subscribe((res:Usuario[]) => {
-      console.log(res);
-      this.usuarios = res;
-    });
-  }
-  salioBusqueda(valor: string){
-    if(valor.length <= 0){
-      this.desde = 0;
 
+  buscarUsuario( termino: string ){
+    if(termino.length <= 0){
       this.cargarUsuarios();
-    }else return console.log(valor);
-  }
-  BorrarUsuario(usuario: Usuario){
-    let id = usuario._id;
-    if(this._usuarioService.usuario.role == 'USER_ROLE'){
-      swal('Importante', 'solo los administradores puede borrar los usuario','info');
       return;
     }
-    if(this._usuarioService.usuario._id == usuario._id){
-      swal('Importante', 'no se puede borrar','warning');
-      return;
-    }
-    swal({
-      title: "Aviso",
-      text: "Esta seguro de querer borrar el suaurio "+usuario.nombre,
-      icon: "warning",
-      buttons: ['No', 'Si'],
-      dangerMode: true
-    }).then((value) => {
-      console.log(value);
-      if (value == null) {
-        swal("Accion cancelada");
-        return;
-      }
-      this._usuarioService.borrarUsuario(id).subscribe((res: any) => {
-        swal( "Usuario Borrado", "usuario "+res.usuario.email+" borrado correctamente","success");
-        this.desde = 0;
-        this.activarBoton1 = false;
-        this.activarBoton2 = false;
-        this.cargarUsuarios();
-      });
+    this.cargando = true;
+    this._usuarioService.buscarUsuarios(termino).subscribe((usuarios: Usuario[] )=> {
+      this.usuarios = usuarios;
+      this.cargando = false;
     });
   }
-  EditarUsuario(usuario: Usuario){
-    this.usuarioModal = usuario;
-    console.log(this.usuarioModal);
-    this.ActivarModal = true;
+
+  borrarUsuario( usuario: Usuario ){
+    swal({
+      title: "¿Seguro que desea borrar el usuario "+usuario.email,
+      icon: "warning",
+      buttons: ["Cancelar", true],
+      dangerMode: true,
+    })
+    .then((willDelete) => {
+      if (willDelete) {
+        this._usuarioService.borrarUsuario(usuario._id).subscribe((resp: Usuario)=> {
+          swal("Usuario "+usuario.email+" borrado correctamente", {
+            icon: "success",
+          });
+          this.cargarUsuarios();
+        });
+      } else {
+        swal("Accion calcelada");
+      }
+    });
   }
-  desactivarModal(e: boolean){
-    this.ActivarModal = e;
+
+  editarImagen(id: string){
+    this._modalServices.mostartModal(true, 'usuarios', id);
+  }
+
+  actualizarUsuario(usuario: Usuario){
+    swal({
+      title: "¿Seguro que desea actualizar el usuario "+usuario.email,
+      icon: "warning",
+      buttons: ["Cancelar", true],
+      dangerMode: true,
+    })
+    .then((update) => {
+      if (update) {
+        this._usuarioService.borrarUsuario(usuario._id).subscribe((resp: Usuario)=> {
+          swal("Usuario "+usuario.email+" Actualizado correctamente", {
+            icon: "success",
+          });
+          this.cargarUsuarios();
+        });
+      } else {
+        swal("Accion calcelada");
+        this.cargarUsuarios();
+      }
+    });
   }
 }

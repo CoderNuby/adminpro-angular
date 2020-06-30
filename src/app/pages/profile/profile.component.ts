@@ -22,6 +22,7 @@ export class ProfileComponent implements OnInit {
 
   ngOnInit() {
   }
+  
   guardarUsuario(usuario: Usuario){
     if(!this.usuario.google){
       this.usuario.email = usuario.email;
@@ -29,6 +30,7 @@ export class ProfileComponent implements OnInit {
     this.usuario.nombre = usuario.nombre;
     this._usuarioService.actualizarUsuario(this.usuario).subscribe((response)=> {});
   }
+
   seleccionImagen(archivo: any){
     let evento = archivo.target.files[0];
     if(!evento){

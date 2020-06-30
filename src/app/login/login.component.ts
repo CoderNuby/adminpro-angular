@@ -27,10 +27,10 @@ export class LoginComponent implements OnInit {
 
   ngOnInit() {
     init_plugins();
-    this.googleInit();
+    this.googleInit();/*Poner en version de produccion*/
     this.email = "test1@test.com";
     this.password = "123";
-    //this.email = localStorage.getItem('email') || '';
+    this.email = localStorage.getItem('email') || '';/*Poner en version de produccion*/
     if(this.email.length > 1){
       this.recordar_cuenta = true;
     }

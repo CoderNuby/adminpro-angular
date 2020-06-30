@@ -1,0 +1,46 @@
+<div class="row animated fadeIn">
+  <div class="col-12">
+    <div class="card">
+      <div class="card-body">
+        <input #input (keyup)="buscarHospital(input.value)" type="text" class="form-control" placeholder="buscar hospital" (focusout)="salioBusqueda(input.value)">
+      </div>
+    </div>
+  </div>
+</div>
+<div class="row  animated fadeIn" *ngIf="cargando">
+  <div class="col-sm-12">
+    <div class="alert alert-warning text-center">
+      <strong>Cargando</strong><br>
+      <i class="fa fa-refresh fa-spin fa-2x"></i><br>
+      <span>Esperando respuesta</span>
+    </div>
+  </div>
+</div>
+<div class="row animated fadeIn" *ngIf="!cargando">
+  <div class="col-12">
+    <div class="card">
+      <div class="card-body">
+        <div class="text-right">
+          <button class="btn waves-effect waves-light btn-rounded btn-primary">
+            <i class="fa fa-plus"></i>Crear Hospitales
+          </button>
+        </div>
+        <h3 class="card-title">Usuarios registrados(<small>{{totalHospitales}}</small>)</h3>
+      </div>
+    </div>
+  </div>
+  <div *ngFor="let hospital of this.hospitales" class="col-sm-4">
+    <div class="card">
+      <img [src]="hospital.imagen | imagen:'hospitales'" class="card-img-top" alt="Imagen de hospital">
+      <div class="card-body">
+        <h5 class="card-title">Informacion</h5>
+        <ul class="card-text">
+          <li class="font-weight-light"><strong class="font-weight-normal">Nombre: </strong>
+            <p>{{hospital.nombre}}</p>
+          </li>
+        </ul>
+      <button *ngIf="mostrarEdicion" type="button" class="btn btn-outline-dark btn-block">Editar</button>
+      </div>
+    </div>
+  </div>
+</div>

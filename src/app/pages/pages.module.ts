@@ -19,8 +19,14 @@ import { PipesModule } from '../pipes/pipes.module';
 import { ProfileComponent } from './profile/profile.component';
 
 import { CommonModule } from '@angular/common';
+import { PaginadorComponent } from '../components/paginador/paginador.component';
+
+
 import { UsuariosComponent } from './usuarios/usuarios.component';
-import { ModalUploadComponent } from '../components/modal-upload/modal-upload.component';
+import { MedicosComponent } from './medicos/medicos.component';
+import { HospitalesComponent } from './hospitales/hospitales.component';
+import { ModalUploadImagenComponent } from '../components/modal-upload-imagen/modal-upload-imagen.component';
+
 
 @NgModule({
     declarations: [
@@ -35,7 +41,10 @@ import { ModalUploadComponent } from '../components/modal-upload/modal-upload.co
         RxjsComponent,
         ProfileComponent,
         UsuariosComponent,
-        ModalUploadComponent
+        PaginadorComponent,
+        MedicosComponent,
+        HospitalesComponent,
+        ModalUploadImagenComponent
     ],
     exports: [
         DashboardComponent,

@@ -48,10 +48,7 @@ export class RegisterComponent implements OnInit {
       condiciones: new FormControl(false)
     }, {validators: this.CompararCampos('password', 'password2')});
 
-    this._usuarioService.cargarUsuarios(0).subscribe((res: any) => {
-      this.numeroTest = res.totalUsuarios + 1;
-    });
-    console.log(this.numeroTest);
+    this.numeroTest = 0;
     /*Quiter lo de arriba cuando se suba a produccion */
   }
   registrarUsuario(){

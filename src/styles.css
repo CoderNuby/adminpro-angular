@@ -10,3 +10,16 @@
 .w150{
     width: 4em;
 }
+
+.w50pr{
+    width: 50%;
+}
+
+.w100pr{
+    width: 100%;
+}
+
+.card-images-settings{
+    width: 100%;
+    height: 14rem;
+}

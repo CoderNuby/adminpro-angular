@@ -2,88 +2,75 @@
   <div class="col-12">
     <div class="card">
       <div class="card-body">
-        <input #input (keyup)="buscarUsuario(input.value)" type="text" class="form-control" placeholder="buscar usuario" (focusout)="salioBusqueda(input.value)">
-      </div>
-    </div>
-  </div>
-</div>
-<div class="row  animated fadeIn" *ngIf="cargando">
-  <div class="col-sm-12">
-    <div class="alert alert-warning text-center">
-      <strong>Cargando</strong><br>
-      <i class="fa fa-refresh fa-spin fa-2x"></i><br>
-      <span>Esperando respuesta</span>
-    </div>
-  </div>
-</div>
-<div class="row animated fadeIn" *ngIf="!cargando">
-  <div class="col-12">
-    <div class="card">
-      <div class="card-body">
-        <h3 class="card-title">Usuarios registrados(<small>{{totalRegistros}}</small>)</h3>
-      </div>
-    </div>
-  </div>
-  <div *ngFor="let usuario of this.usuarios" class="col-sm-4">
-    <div class="card">
-      <img [src]="usuario.imagen|imagen" class="card-img-top" alt="">
-      <div class="card-body">
-        <h5 class="card-title">Informacion</h5>
-        <ul class="card-text">
-          <li class="font-weight-light"><strong class="font-weight-normal">Email: </strong>
-            <p>{{usuario.email}}</p>
-          </li>
-          <li class="font-weight-light"><strong class="font-weight-normal">Nombre: </strong>
-            <p>{{usuario.nombre}}</p>
-          </li>
-          <li class="font-weight-light"><strong class="font-weight-normal">
-              Role:
-            </strong>
-            <p>{{usuario.role}}</p>
-          </li>
-          <!---->
-          <li class="font-weight-light">
-            <strong class="font-weight-normal">Auth: </strong>
-            <p *ngIf="usuario.google">Google</p>
-            <p *ngIf="!usuario.google">Normal</p>
-          </li>
-        </ul>
-        <!--
-        <div class="d-flex justify-content-sm-end">
-          <button (click)="cambiarUsuario(usuario)" type="button" class="btn btn-outline-primary mr-1">
-            <i class="fa fa-save"></i>
-          </button>
-          <button (click)="BorrarUsuario(usuario)" type="button" class="btn btn-outline-danger mr-1">
-            <i class="fa fa-trash-o"></i>
-          </button>
-        </div>
-      -->
-      <button *ngIf="Role == 'ADMIN_ROLE'"  (click)="EditarUsuario(usuario)" type="button" class="btn btn-outline-dark btn-block">Editar</button>
+        <input #busqueda (keyup)="buscarUsuario(busqueda.value)" type="text" class="form-control" placeholder="buscar Usuario">
       </div>
     </div>
   </div>
 </div>
 
-<div class="d-flex justify-content-end justify-content-sm-center">
-  <div class="flex-row animated fadeIn">
-    <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
-      <div class="btn-group mr-2" role="group" aria-label="First group">
-        <button (click)="mostrarOtrosUsuarios(-12)" [disabled]="activarBoton2" class="btn btn-secondary" type="button" onclick="this.blur();">
-          <i class="fa fa-arrow-left"></i>
-        </button>
-      </div>
-      <div class="btn-group mr-2" role="group" aria-label="Second group">
-        <button type="button" class="btn btn-secondary" onclick="this.blur();">5</button>
-        <button type="button" class="btn btn-secondary" onclick="this.blur();">6</button>
-        <button type="button" class="btn btn-secondary" onclick="this.blur();">7</button>
-        <button type="button" class="btn btn-secondary" onclick="this.blur();">...</button>
-      </div>
-      <div class="btn-group" role="group" aria-label="Third group">
-        <button (click)="mostrarOtrosUsuarios(12)" [disabled]="activarBoton1" class="btn btn-secondary" type="button" onclick="this.blur();">
-          <i class="fa fa-arrow-right"></i>
-        </button>
-      </div>
-    </div>  
+
+<div *ngIf="cargando" class="row animated fadeIn">
+  <div class="col-sm-12">
+    <div class="alert alert-warning text-center">
+      <strong>Cargando</strong>
+      <br>
+      <i class="fa fa-refresh fa-spin fa-2x"></i>
+      <br>
+      <span>Espere por favor</span>
+    </div>
   </div>
 </div>
-<app-modal-upload *ngIf="ActivarModal" [usuarioEdit]="usuarioModal" (ActivarModal)="desactivarModal($event)"></app-modal-upload>
+
+<div *ngIf="!cargando" class="row animated fadeIn">
+  <div class="col-12">
+    <div class="card">
+      <div class="card-body">
+        <h3 class="card-title">Usuarios registrados( <small>{{totalRegistros}}</small> )</h3>   
+      </div>
+    </div>
+  </div>
+  <div *ngFor="let usuario of this.usuarios" class="col-sm-4">
+    <div class="card" style="width: 18rem;">
+      <img (click)="editarImagen(usuario._id)" class="card-images-settings" [src]="usuario.imagen | imagen" alt="">
+      <ul class="list-group list-group-flush">
+        <li *ngIf="!editingCorreo" class="list-group-item">Correo: {{ usuario.email }}</li>
+        <li *ngIf="editingCorreo" class="list-group-item">
+          <div class="input-group mb-3">
+            Correo: <input [(ngModel)]="usuario.email" type="text" class="form-control" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1">
+          </div>
+        </li>
+        <li *ngIf="!editingNombre" class="list-group-item">Nombre: {{ usuario.nombre }}</li>
+        <li *ngIf="editingNombre" class="list-group-item">
+          <div class="input-group mb-3">
+            Nombre: <input [(ngModel)]="usuario.nombre" type="text" class="form-control" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1">
+          </div>
+        </li>
+        <li class="list-group-item">Role: {{ usuario.role }}</li>
+        <li class="list-group-item">
+          Auth: 
+          <label *ngIf="usuario.google" class="label label-danger mr-2">Google</label>
+          <label *ngIf="!usuario.google" class="label label-info mr-2">Normal</label>
+        </li>
+      </ul>
+      <div class="card-body">
+        <button (click)="actualizarUsuario(usuario)" type="button" class="btn btn-outline-primary mr-2">
+          <i class="fa fa-save"></i>
+        </button>
+        <button (click)="borrarUsuario(usuario)" type="button" class="btn btn-outline-danger mr-2">
+          <i class="fa fa-trash-o"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<app-paginador 
+  [totalRegistros]="totalRegistros"
+  [registroPerPage]="registrosPerPages"
+  (mandarPaginador)="cambiarPagina($event)"
+  (mandarPaginador)="cambiarPagina($event)"
+  >
+</app-paginador>
+
+<app-modal-upload-imagen></app-modal-upload-imagen>

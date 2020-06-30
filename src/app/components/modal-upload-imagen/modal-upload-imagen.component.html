@@ -1,0 +1,31 @@
+<div *ngIf="_modalUploadImagenService.mostrar" class="fondo-negro">
+  <div style="display: block;" class="modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Modal title</h5>
+          <button (click)="cerrarModal()" type="button" class="close" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body text-center">
+          
+          <img  *ngIf="!imagenTemporal" [src]="'test' | imagen" class="w50pr" alt="Imagen de usuario">
+          <img  *ngIf="imagenTemporal" [src]="imagenTemporal" class="w50pr" alt="Imagen de usuario">
+        
+          
+          <div class="container-fluid estilo-personalizado">
+            <button class="estilo-fotos btn btn-outline-dark">
+              Elegir Imagen
+              <input (change)="seleccionImagen($event)" type="file" class="custom-file-input input-subir-foto">
+            </button>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button (click)="cerrarModal()" type="button" class="btn btn-secondary">Cerrar</button>
+          <button (click)="subirImagen()" [disabled]="!imagenTemporal" type="button" class="btn btn-primary">Save changes</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
